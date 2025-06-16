@@ -1,25 +1,45 @@
-//creating external stage (create my own bucket)
-CREATE OR REPLACE STAGE SCD_DEMO.SCD2.customer_ext_stage
-url='s3://snowflake-db-tutorial-anish-kumar-thakur/stream_data'
-credentials=(aws_key_id='***********',aws_secret_key='***************');
+create database if not exists scd_demo;
 
-CREATE OR REPLACE FILE FORMAT SCD_DEMO.SCD2.CSV
-TYPE = 'CSV'
-FIELD_DELIMITER=","
-SKIP_HEADER=1;
+use database scd_demo;
+create schema if not exists scd2;
+use schema scd2;
+show tables;
 
-SHOW STAGES;
-LIST @customer_ext_stage;
+create or replace table customer(
+    customer_id number,
+    first_name varchar,
+    last_name varchar,
+    email varchar,
+    street varchar,
+    city varchar,
+    state varchar,
+    country varchar,
+    update_timestamp timestamp_ntz default current_timestamp()
+);
 
-CREATE OR REPLACE PIPE customer_s3_pipe
-    auto_ingest = true
-    as
-    COPY INTO customer_raw
-    from @customer_ext_stage
-    file_format = csv;
+create or replace table customer_history(
+    customer_id number,
+    first_name varchar,
+    last_name varchar,
+    email varchar,
+    street varchar,
+    city varchar,
+    state varchar,
+    county varchar,
+    start_time timestamp_ntz default current_timestamp(),
+    update_timestamp timestamp_ntz default current_timestamp(),
+    is_current boolean
+);
+drop table customer_history;
+create or replace table customer_raw(
+    customer_id number,
+    first_name varchar,
+    last_name varchar,
+    email varchar,
+    street varchar,
+    city varchar,
+    state varchar,
+    country varchar
+);
 
-    show pipes;
-    select SYSTEM$PIPE_STATUS('customer_s3_pipe');
-    select * from customer_raw;
-    
-    TRUNCATE customer_raw;
+create or replace stream customer_table_changes on table customer;
