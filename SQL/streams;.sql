@@ -86,7 +86,7 @@ when not matched and ccd.dml_type = 'I' then insert -- Inserting a new CUSTOMER_
     values (ccd.CUSTOMER_ID, ccd.FIRST_NAME, ccd.LAST_NAME, ccd.EMAIL, ccd.STREET, ccd.CITY,ccd.STATE,ccd.COUNTRY, ccd.start_time, ccd.end_time, ccd.is_current);
     
 show tasks;
-alter task tsk_scd_hist suspend; --resume --suspend
+alter task tsk_scd_hist resume; --resume --suspend
 
 
 
