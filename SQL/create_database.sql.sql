@@ -1,7 +1,7 @@
 //creating external stage (create my own bucket)
 CREATE OR REPLACE STAGE SCD_DEMO.SCD2.customer_ext_stage
 url='s3://snowflake-db-tutorial-anish-kumar-thakur/stream_data'
-credentials=(aws_key_id='AKIAV5AJXXPC647DJHP',aws_secret_key='mer9Kn9z00/CKFtEqcpMEUwbFgjUHrebEv4JeGF');
+credentials=(aws_key_id='***********',aws_secret_key='***************');
 
 CREATE OR REPLACE FILE FORMAT SCD_DEMO.SCD2.CSV
 TYPE = 'CSV'
